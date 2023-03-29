@@ -1,7 +1,6 @@
-package edu.pnu.domain;
+package edu.pnu.dao;
 
 import java.sql.Connection;
-// import java.util.Date;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,14 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import edu.pnu.domain.MemberVO;
 
-@Repository
-public class MemberDAO {
-
+public class MemberDaoH2Impl implements MemberInterface {
+	
 	Connection con;
 	// DB 연결
-	public MemberDAO() {
+	public MemberDaoH2Impl() {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/springboot", "sa", "");
@@ -29,6 +27,7 @@ public class MemberDAO {
 	}
 
 	// 전체 멤버 표시
+	@Override
 	public List<MemberVO> getMembers() {
 		
 		List<MemberVO> memberList = new ArrayList<>();
@@ -76,6 +75,7 @@ public class MemberDAO {
 	}
 
 	// id로 검색하기
+	@Override
 	public MemberVO getMember(int id) {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -152,6 +152,7 @@ public class MemberDAO {
 	}
 	
 	// 멤버 추가하기
+	@Override
 	public MemberVO addMembers(MemberVO member) {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -184,34 +185,9 @@ public class MemberDAO {
 		return null;
 	}
 	// 멤버 갱신
+	@Override
 	public MemberVO updateMembers(MemberVO member) {
-		// 교수님 예제 수정본
-//		PreparedStatement psmt = null;
-//
-//		try {
-//			String query = "update member set ";
-//			String append = "";
-//			if (member.getName() != null) {
-//				// name 문자열에서 오류가 발생했다.
-//				// 이 코드는 문자열을 홑따옴표로 감싸주어야 했다. 
-//				append = String.format("name = '%s'", member.getName());
-//				query += append;
-//			}
-//			if (member.getPass() != null) {
-//				if (append.isEmpty()) {
-//					query += String.format("pass = %s", member.getPass());
-//				} else {
-//					query += ", " + String.format("pass = %s", member.getPass());
-//				}
-//			}
-//			query += String.format(" where id = %s", member.getId());
-//			System.out.println(query);
-//			psmt = con.prepareStatement(query);
-//			psmt.executeUpdate();
-//
-//			return getMember(member.getId());
 		
-		// 내 예제
 		PreparedStatement psmt = null;
 		try {
 			// name만 갱신
@@ -257,6 +233,7 @@ public class MemberDAO {
 		return null;
 	}
 	// 멤버 제거
+	@Override
 	public MemberVO removeMember(int id) {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -288,5 +265,3 @@ public class MemberDAO {
 		return null;
 	}
 }
-
-
