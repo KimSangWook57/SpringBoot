@@ -1,10 +1,16 @@
 package edu.pnu.dao;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class LogDaoH2Impl {
 
 	Connection con;
@@ -37,8 +43,24 @@ public class LogDaoH2Impl {
 			} else {
 				psmt.setBoolean(3, true);
 			}
-
 			psmt.executeUpdate();
+
+			// 파일 추가 코드 작성.
+			// 내용을 받아와서 찍을 방법을 생각해보자.
+			File file = new File("log.txt");
+			FileWriter fw = new FileWriter(file, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			try {
+				bw.write(string + ", " + type + ", " + obj);
+				bw.newLine();
+			} catch (IOException e) {
+				System.out.println("파일 삽입 중 문제 발생");
+			}
+			finally {
+				if (bw != null) {
+					bw.close();
+				}
+			}
 
 		} catch (Exception e) {
 			System.out.println("db 로그 추가 중 오류 발생");
@@ -56,5 +78,4 @@ public class LogDaoH2Impl {
 		}
 
 	}
-
 }

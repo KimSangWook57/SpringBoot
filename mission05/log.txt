@@ -1,0 +1,5 @@
+get, insert into dblog(string, type, success) values (?, ?, ?);
+get, insert into dblog(string, type, success) values (?, ?, ?);
+get, prep0: insert into dblog(string, type, success) values (?, ?, ?); {1: 'get', 2: 'h2', 3: TRUE}
+get, prep0: insert into dblog(string, type, success) values (?, ?, ?); {1: 'get', 2: 'h2', 3: FALSE}
+get, h2, [MemberVO [id=1, pass=pass1, name=name1, regidate=2023-03-24], MemberVO [id=2, pass=pass2, name=name2, regidate=2023-03-24], MemberVO [id=3, pass=1234, name=임꺽정, regidate=2023-03-24], MemberVO [id=39, pass=1234, name=홍길동, regidate=2023-03-28], MemberVO [id=40, pass=12345, name=홍경래, regidate=2023-03-28], MemberVO [id=41, pass=1234, name=장길산, regidate=2023-03-28], MemberVO [id=42, pass=1234, name=홍길동, regidate=2023-03-28]]

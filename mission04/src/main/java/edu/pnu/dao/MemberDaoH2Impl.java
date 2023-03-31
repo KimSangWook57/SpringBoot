@@ -14,6 +14,7 @@ import edu.pnu.domain.MemberVO;
 public class MemberDaoH2Impl implements MemberInterface {
 
 	Connection con;
+
 	// DB 연결
 	public MemberDaoH2Impl() {
 		try {
@@ -29,7 +30,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 	// 전체 멤버 표시
 	@Override
 	public List<MemberVO> getMembers() {
-		
+
 		List<MemberVO> memberList = new ArrayList<>();
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -55,9 +56,9 @@ public class MemberDaoH2Impl implements MemberInterface {
 				// 내용을 리스트에 저장.
 				memberList.add(memberVO);
 			}
-			
+
 			return memberList;
-			
+
 		} catch (Exception e) {
 			System.out.println("db 전체 검색 중 오류 발생");
 			e.printStackTrace();
@@ -100,9 +101,9 @@ public class MemberDaoH2Impl implements MemberInterface {
 				memberVO.setPass(pass);
 				memberVO.setName(name);
 				memberVO.setRegidate(regidate);
-				
+
 			}
-			
+
 			return memberVO;
 
 		} catch (Exception e) {
@@ -121,6 +122,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 		return null;
 	}
+
 	// 마지막 자리를 구하는 코드.
 	// id에 AI 속성을 넣었다면, 넣고 지울 때마다 id값이 계속 늘어나고 있기 때문에 쓰는 코드.
 	private int getMaxId() {
@@ -132,7 +134,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 			psmt = con.prepareStatement(query);
 			rs = psmt.executeQuery();
 			// 커서 이동
-			rs.next(); 
+			rs.next();
 			// 커서의 id를 반환
 			return rs.getInt(1);
 
@@ -151,9 +153,9 @@ public class MemberDaoH2Impl implements MemberInterface {
 			}
 		}
 		return -1;
-	
+
 	}
-	
+
 	// 멤버 추가하기
 	@Override
 	public MemberVO addMembers(MemberVO member) {
@@ -187,10 +189,11 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 		return null;
 	}
+
 	// 멤버 갱신
 	@Override
 	public MemberVO updateMembers(MemberVO member) {
-		
+
 		PreparedStatement psmt = null;
 		try {
 			// name만 갱신
@@ -220,7 +223,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 			}
 			psmt.executeUpdate();
 			return getMember(member.getId());
-		
+
 		} catch (Exception e) {
 			System.out.println("db 갱신 중 오류 발생");
 			e.printStackTrace();
@@ -235,6 +238,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 		return null;
 	}
+
 	// 멤버 제거
 	@Override
 	public MemberVO removeMember(int id) {

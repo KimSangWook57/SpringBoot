@@ -20,8 +20,6 @@ public interface MemberInterface {
 
 	// 멤버 제거
 	MemberVO removeMember(int id);
-	
-	// 로그 저장?
-	// 
 
+	
 }

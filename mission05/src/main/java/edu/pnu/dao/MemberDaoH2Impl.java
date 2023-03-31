@@ -7,15 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import edu.pnu.domain.MemberVO;
 
 public class MemberDaoH2Impl implements MemberInterface {
 	
 	Connection con;
+
 	// DB 연결
 	public MemberDaoH2Impl() {
 		try {
@@ -27,40 +26,37 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 
 	}
-
-	// 전체 멤버 표시
+	
 	@Override
 	public List<MemberVO> getMembers() {
 		
 		List<MemberVO> memberList = new ArrayList<>();
 		Statement stmt = null;
 		ResultSet rs = null;
-
+		
 		try {
-			// query에 변수가 없다면, createStatement를 사용한다.
 			String query = "select * from member";
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
-
+			
 			while (rs.next()) {
-				// 루프를 돌며 내용을 가져와야 한다.
 				MemberVO memberVO = new MemberVO();
 				int id = rs.getInt(1);
 				String pass = rs.getString(2);
 				String name = rs.getString(3);
 				Date regidate = rs.getDate(4);
-				// 만들어둔 memberVO에 내용을 넣는다.
+				
 				memberVO.setId(id);
 				memberVO.setPass(pass);
 				memberVO.setName(name);
 				memberVO.setRegidate(regidate);
-				// 내용을 리스트에 저장.
+				
 				memberList.add(memberVO);
+				
 			}
 			
 			return memberList;
-			
-		} catch (Exception e) {
+		} catch(Exception e) {
 			System.out.println("db 전체 검색 중 오류 발생");
 			e.printStackTrace();
 		} finally {
@@ -74,10 +70,10 @@ public class MemberDaoH2Impl implements MemberInterface {
 				e.printStackTrace();
 			}
 		}
+
 		return null;
 	}
 
-	// id로 검색하기
 	@Override
 	public MemberVO getMember(int id) {
 		PreparedStatement psmt = null;
@@ -92,19 +88,17 @@ public class MemberDaoH2Impl implements MemberInterface {
 			rs = psmt.executeQuery();
 
 			while (rs.next()) {
-				// 검색된 내용이 있다면 정보를 가져와서
 				int idx = rs.getInt(1);
 				String pass = rs.getString(2);
 				String name = rs.getString(3);
 				Date regidate = rs.getDate(4);
-				// memberVO에 넣어준 후 반환한다.
+				
 				memberVO.setId(idx);
 				memberVO.setPass(pass);
 				memberVO.setName(name);
 				memberVO.setRegidate(regidate);
-				
+
 			}
-			
 			return memberVO;
 
 		} catch (Exception e) {
@@ -123,40 +117,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 		return null;
 	}
-	// 마지막 자리를 구하는 코드.
-	// id에 AI 속성을 넣었다면, 넣고 지울 때마다 id값이 계속 늘어나고 있기 때문에 쓰는 코드.
-	private int getMaxId() {
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
 
-		try {
-			String query = "select max(id) from member";
-			psmt = con.prepareStatement(query);
-			rs = psmt.executeQuery();
-			// 커서 이동
-			rs.next(); 
-			// 커서의 id를 반환
-			return rs.getInt(1);
-
-		} catch (Exception e) {
-			System.out.println("db 검색 중 오류 발생");
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (psmt != null)
-					psmt.close();
-			} catch (Exception e) {
-				System.out.println("db 닫는 중 오류 발생");
-				e.printStackTrace();
-			}
-		}
-		return -1;
-	
-	}
-	
-	// 멤버 추가하기
 	@Override
 	public MemberVO addMembers(MemberVO member) {
 		PreparedStatement psmt = null;
@@ -189,11 +150,42 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 		return null;
 	}
-	// 멤버 갱신
+	
+	private int getMaxId() {
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			String query = "select max(id) from member";
+			psmt = con.prepareStatement(query);
+			rs = psmt.executeQuery();
+			// 커서 이동
+			rs.next();
+			// 커서의 id를 반환
+			return rs.getInt(1);
+
+		} catch (Exception e) {
+			System.out.println("db 검색 중 오류 발생");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (psmt != null)
+					psmt.close();
+			} catch (Exception e) {
+				System.out.println("db 닫는 중 오류 발생");
+				e.printStackTrace();
+			}
+		}
+		return -1;
+
+	}
+	
 	@Override
 	public MemberVO updateMembers(MemberVO member) {
-		
 		PreparedStatement psmt = null;
+		
 		try {
 			// name만 갱신
 			if (member.getPass() == null) {
@@ -222,7 +214,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 			}
 			psmt.executeUpdate();
 			return getMember(member.getId());
-		
+
 		} catch (Exception e) {
 			System.out.println("db 갱신 중 오류 발생");
 			e.printStackTrace();
@@ -237,7 +229,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 		return null;
 	}
-	// 멤버 제거
+
 	@Override
 	public MemberVO removeMember(int id) {
 		PreparedStatement psmt = null;
@@ -269,4 +261,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 		}
 		return null;
 	}
+
 }
+
+
