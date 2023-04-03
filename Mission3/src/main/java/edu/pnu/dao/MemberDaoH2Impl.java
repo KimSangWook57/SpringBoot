@@ -156,17 +156,12 @@ public class MemberDaoH2Impl implements MemberInterface {
 	}
 
 	@Override
-	public MemberVO deleteMember(Integer id) {
+	public int deleteMember(Integer id) {
 		PreparedStatement st = null;
 		try {
-			MemberVO memberVO = getMember(id);
-			
 			st = con.prepareStatement("delete from member where id=?");
 			st.setInt(1, id);
-			st.executeUpdate();
-			
-			return memberVO;
-		
+			return st.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -176,7 +171,7 @@ public class MemberDaoH2Impl implements MemberInterface {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return 0;
 	}
 
 }

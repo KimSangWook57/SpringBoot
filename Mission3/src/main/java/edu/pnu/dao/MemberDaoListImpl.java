@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import edu.pnu.domain.MemberVO;
 
 public class MemberDaoListImpl implements MemberInterface {
-	
-	private List<MemberVO> list = new ArrayList<>();
+	private List<MemberVO> list;
 	
 	public MemberDaoListImpl() {
-		for (int i = 1 ; i <= 5 ; i++) {
+		list = new ArrayList<>();
+		for (int i = 1 ; i < 21 ; i++) {
 			list.add(new MemberVO(i, "1234", "이름"+i, new Date()));
-		}
+		}	
 	}
 	
 	@Override
@@ -29,12 +31,15 @@ public class MemberDaoListImpl implements MemberInterface {
 		}
 		return null;
 	}
-
+	
+	private int getNextId() {
+		return list.size() + 1;
+	}
+	
 	@Override
 	public MemberVO addMember(MemberVO member) {
-		member.setId(list.size() + 1);
+		member.setId(getNextId());
 		member.setRegidate(new Date());
-		list.add(member);
 		return member;
 	}
 
@@ -51,14 +56,14 @@ public class MemberDaoListImpl implements MemberInterface {
 	}
 
 	@Override
-	public MemberVO deleteMember(Integer id) {
+	public int deleteMember(Integer id) {
 		for (MemberVO m : list) {
 			if (m.getId() == id) {
 				list.remove(m);
-				return m;
+				return 1;
 			}
 		}
-		return null;
+		return 0;
 	}
 
 }
