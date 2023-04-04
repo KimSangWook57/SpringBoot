@@ -78,5 +78,5 @@ public class Board {
 		return "Board [seq=" + seq + ", title=" + title + ", writer=" + writer + ", content=" + content
 				+ ", createDate=" + createDate + ", cnt=" + cnt + "]";
 	}
-	
+
 }
